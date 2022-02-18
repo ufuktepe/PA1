@@ -1,11 +1,14 @@
 from graph import *
+import networkx as nx
+from random import randint
+from time import time
 
 
 def kruskal(graph):
 
     graph.edges.sort(key=lambda x: x.weight)
 
-    mst = Graph()
+    mst = Graph(graph.n)
 
     i, num_edges = 0, 0
 
@@ -22,7 +25,7 @@ def kruskal(graph):
 
         i += 1
 
-    return mst.get_avg_weight()
+    return mst
 
 
 def find_set(v):
@@ -57,3 +60,41 @@ def union(v1, v2):
         root_v1.parent = root_v2
         if root_v1.rank == root_v2.rank:
             root_v1.rank += 1
+
+
+if __name__ == '__main__':
+    start = time()
+    n = 1000
+
+    my_graph = Graph(n)
+    vertices = {}
+
+    G = nx.Graph()
+
+    for i in range(n):
+        G.add_node(i)
+        vertices[i] = Vertex1D(i)
+
+    for i in range(n-1):
+        for j in range(i+1, n):
+            w = randint(1, n)
+            G.add_edge(i, j, weight=w)
+            my_graph.edges.append(Edge(vertices[i], vertices[j], w))
+
+    print(f'Graph Building: {time() - start}')
+
+    # NX
+    start = time()
+    mst = nx.algorithms.minimum_spanning_edges(G, algorithm="kruskal", data=True)
+    edgelist = list(mst)
+    sum = 0
+    for edge in edgelist:
+        sum += edge[2]['weight']
+    print(f'Networknx: {sum}')
+    print(f'Networknx: {time() - start}')
+
+    # My Algorithm
+    start = time()
+    my_mst = kruskal(my_graph)
+    print(f'My MST: {my_mst.get_sum_weight()}')
+    print(f'My MST: {time() - start}')

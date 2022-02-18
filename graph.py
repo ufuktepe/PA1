@@ -14,6 +14,11 @@ class Graph:
             count += 1
         return sum / count
 
+    def get_sum_weight(self):
+        sum = 0
+        for edge in self.edges:
+            sum += edge.weight
+        return sum
 
 
 
