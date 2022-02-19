@@ -30,8 +30,8 @@ def kruskal(graph):
 
         i += 1
 
-        if i % 100 == 0:
-            print(i)
+        # if i % 100 == 0:
+        #     print(i)
 
     return mst, max_edge_cost
 
@@ -71,30 +71,34 @@ def union(v1, v2):
 
 
 if __name__ == '__main__':
-    start = time()
 
-    # Number of vertices
-    n = 10
+    n_list = [128, 256, 512, 1024, 2048, 4096, 8192, 16384]
 
-    # Create graph for Kruskal's algorithm
-    g = Graph(n)
-    vertices = {}
+    for n in n_list:
+        for i in range(3):
+            start = time()
 
-    # Create vertices
-    for i in range(n):
-        vertices[i] = Vertex1D(i)
+            # Create graph for Kruskal's algorithm
+            g = Graph(n)
+            vertices = {}
 
-    # Create edges
-    for i in range(n-1):
-        for j in range(i+1, n):
-            w = random.uniform(0, 1)
-            g.edges.append(Edge(vertices[i], vertices[j], w))
+            # Create vertices
+            for i in range(n):
+                vertices[i] = Vertex1D(i)
 
-    print(f'Graph building runtime: {time() - start} \n')
+            # Create edges
+            for i in range(n-1):
+                for j in range(i+1, n):
+                    w = random.uniform(0, 1)
+                    g.edges.append(Edge(vertices[i], vertices[j], w))
 
-    # Run MST using Kruskal's algorithm
-    start = time()
-    kruskal_mst, max_edge_cost = kruskal(g)
-    print(f'Average Cost: {kruskal_mst.get_avg_weight()}')
-    print(f'Max Edge Cost: {max_edge_cost}')
-    print(f'Runtime: {time() - start}')
+            print(f'n={n} Graph building runtime: {time() - start}')
+
+            # Run MST using Kruskal's algorithm
+            start = time()
+            kruskal_mst, max_edge_cost = kruskal(g)
+            print(f'Average Cost: {kruskal_mst.get_avg_weight()}')
+            print(f'Max Edge Cost: {max_edge_cost}')
+            print(f'Runtime: {time() - start}\n')
+
+    print('DONE!')
