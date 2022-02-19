@@ -51,6 +51,8 @@ if __name__ == '__main__':
 
     n_list = [128, 256, 512, 1024, 2048, 4096, 8192, 16384]
 
+    print('n,Graph creation runtime,Avg Cost,Max Edge Cost,MST Runtime')
+
     for n in n_list:
         for i in range(3):
             start = time()
@@ -68,14 +70,13 @@ if __name__ == '__main__':
                     w = random.uniform(0, 1)
                     vertices[i].add_adj_vertex(vertices[j], w)
 
-            print(f'n={n} Graph building runtime: {time() - start}')
+            graph_creation_runtime = round(time() - start)
 
             # Run MST using Prim's algorithm
             start = time()
             total_cost, max_edge_cost = prim(vertices)
-            print(f'Average Cost: {total_cost/n}')
-            print(f'Max Edge Cost: {max_edge_cost}')
-            print(f'Runtime: {time() - start}\n')
+            mst_runtime = round(time() - start)
+            print(f'{n},{graph_creation_runtime},{total_cost/n},{max_edge_cost},{mst_runtime}')
 
     print('DONE!')
 
