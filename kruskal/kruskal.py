@@ -1,6 +1,5 @@
 from graph import *
-import networkx as nx
-from random import randint
+import random
 from time import time
 
 
@@ -9,6 +8,8 @@ def kruskal(graph):
     graph.edges.sort(key=lambda x: x.weight)
 
     mst = Graph(graph.n)
+
+    max_edge_cost = 0
 
     i, num_edges = 0, 0
 
@@ -23,9 +24,16 @@ def kruskal(graph):
             mst.edges.append(edge)
             num_edges += 1
 
+            # Update max edge cost
+            if max_edge_cost < edge.weight:
+                max_edge_cost = edge.weight
+
         i += 1
 
-    return mst
+        if i % 100 == 0:
+            print(i)
+
+    return mst, max_edge_cost
 
 
 def find_set(v):
@@ -64,37 +72,29 @@ def union(v1, v2):
 
 if __name__ == '__main__':
     start = time()
-    n = 1000
 
-    my_graph = Graph(n)
+    # Number of vertices
+    n = 10
+
+    # Create graph for Kruskal's algorithm
+    g = Graph(n)
     vertices = {}
 
-    G = nx.Graph()
-
+    # Create vertices
     for i in range(n):
-        G.add_node(i)
         vertices[i] = Vertex1D(i)
 
+    # Create edges
     for i in range(n-1):
         for j in range(i+1, n):
-            w = randint(1, n)
-            G.add_edge(i, j, weight=w)
-            my_graph.edges.append(Edge(vertices[i], vertices[j], w))
+            w = random.uniform(0, 1)
+            g.edges.append(Edge(vertices[i], vertices[j], w))
 
-    print(f'Graph Building: {time() - start}')
+    print(f'Graph building runtime: {time() - start} \n')
 
-    # NX
+    # Run MST using Kruskal's algorithm
     start = time()
-    mst = nx.algorithms.minimum_spanning_edges(G, algorithm="kruskal", data=True)
-    edgelist = list(mst)
-    sum = 0
-    for edge in edgelist:
-        sum += edge[2]['weight']
-    print(f'Networknx: {sum}')
-    print(f'Networknx: {time() - start}')
-
-    # My Algorithm
-    start = time()
-    my_mst = kruskal(my_graph)
-    print(f'My MST: {my_mst.get_sum_weight()}')
-    print(f'My MST: {time() - start}')
+    kruskal_mst, max_edge_cost = kruskal(g)
+    print(f'Average Cost: {kruskal_mst.get_avg_weight()}')
+    print(f'Max Edge Cost: {max_edge_cost}')
+    print(f'Runtime: {time() - start}')

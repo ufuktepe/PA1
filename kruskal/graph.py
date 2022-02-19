@@ -21,7 +21,6 @@ class Graph:
         return sum
 
 
-
 class Edge:
     def __init__(self, v1, v2, w):
         self.vertex_1 = v1
@@ -36,49 +35,34 @@ class Vertex1D:
         self.rank = 0
 
 
-class Vertex2D:
+class Vertex2D(Vertex1D):
     def __init__(self, v_id, x, y):
-        self.id = v_id
+        super(Vertex2D, self).__init__(v_id)
         self.x = x
         self.y = y
-        self.parent = self
-        self.rank = 0
 
     def get_distance(self, other):
         return math.sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
 
 
-class Vertex3D:
+class Vertex3D(Vertex2D):
     def __init__(self, v_id, x, y, z):
-        self.id = v_id
-        self.x = x
-        self.y = y
+        super(Vertex3D, self).__init__(v_id, x, y)
         self.z = z
-        self.parent = self
-        self.rank = 0
 
     def get_distance(self, other):
         return math.sqrt((self.x - other.x)**2 + (self.y - other.y)**2 + (self.z - other.z)**2)
 
 
-class Vertex4D:
+class Vertex4D(Vertex3D):
     def __init__(self, v_id, x, y, z, t):
-        self.id = v_id
-        self.x = x
-        self.y = y
-        self.z = z
+        super(Vertex4D, self).__init__(v_id, x, y, z)
         self.t = t
-        self.parent = self
-        self.rank = 0
 
     def get_distance(self, other):
         return math.sqrt((self.x - other.x)**2 + (self.y - other.y)**2 + (self.z - other.z)**2 + (self.t - other.t)**2)
 
 
 if __name__ == '__main__':
-    v1 = Vertex2D(4, 0, 0)
-    v2 = Vertex2D(6, 3, 4)
-
-
-    print(v2.get_distance(v1))
+    pass
 
